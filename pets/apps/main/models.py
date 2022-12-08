@@ -1,3 +1,26 @@
+import uuid
 from django.db import models
 
-# Create your models here.
+
+class Pet(models.Model):
+    class PetType(models.TextChoices):
+        DOG = 'dog', 'Собака'
+        CAT = 'cat', 'Кошка'
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(verbose_name='Имя питомца', max_length=100)
+    age = models.IntegerField(verbose_name='Возраст')
+    type = models.CharField(
+        verbose_name='Вид животного',
+        max_length=10,
+        choices=PetType.choices,
+        db_index=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Питомец'
+        verbose_name_plural = "Питомцы"
+
+    def __str__(self) -> str:
+        return f'{self.type}: {self.name}'
