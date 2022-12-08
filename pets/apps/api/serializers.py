@@ -4,7 +4,10 @@ from pets.apps.main.models import Pet
 
 class PetSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
+    created_at = serializers.DateTimeField(
+        read_only=True,
+        format="%Y-%m-%dT%H:%M:%S"
+    )
     
     class Meta:
         model = Pet
@@ -15,3 +18,5 @@ class PetSerializer(serializers.ModelSerializer):
             'type',
             'created_at'
         )
+
+    
