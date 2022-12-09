@@ -30,8 +30,12 @@ class PetPhoto(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     pet = models.ForeignKey(
         Pet,
-        verbose_name='питомец',
+        verbose_name='Питомец',
         related_name='photos',
         on_delete=models.CASCADE
     )
-    photo = models.ImageField('фото', upload_to='pets')
+    photo = models.ImageField('Фото', upload_to='pets')
+
+    class Meta:
+        verbose_name = 'Фото питомца'
+        verbose_name_plural = "Фото Питомцев"

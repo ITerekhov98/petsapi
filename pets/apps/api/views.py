@@ -1,4 +1,6 @@
-from django.shortcuts import get_object_or_404, render
+from distutils.util import strtobool
+
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -16,7 +18,16 @@ class PetsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         limit = int(self.request.query_params.get('limit', 20))
         offset = int(self.request.query_params.get('offset', 0))
-        queryset =  Pet.objects.all().order_by('-created_at')[offset:limit+offset]
+        has_photos = self.request.query_params.get('has_photos')
+        if not has_photos:
+            queryset = Pet.objects.all().order_by('-created_at')[offset:limit+offset]
+        else:
+            has_photos = strtobool(has_photos)
+            has_not_photos = False if has_photos else True
+            queryset = Pet.objects.filter(photos__isnull=has_not_photos) \
+                                  .distinct() \
+                                  .order_by('-created_at') \
+                                  [offset:limit+offset]
         return queryset
 
     def list(self, request, *args, **kwargs):
