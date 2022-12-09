@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'pets.apps.main',
     'pets.apps.api',
     'rest_framework',
-     'django_cleanup.apps.CleanupConfig',
+    'django_cleanup.apps.CleanupConfig',
+    'django.contrib.sites', 
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,7 @@ REST_FRAMEWORK = {
     ),
     'EXCEPTION_HANDLER': 'pets.apps.api.handlers.auth_exception_handler',
 }
+
+SITE_ID = 1
+
+CURRENT_DOMAIN = env.str('CURRENT_DOMAIN')

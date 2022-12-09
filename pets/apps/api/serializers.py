@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pets.apps.main.models import Pet, PetPhoto
-
+from django.contrib.sites.models import Site
 
 class PetPhotoSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
@@ -34,7 +34,22 @@ class PetSerializer(serializers.ModelSerializer):
             'age',
             'type',
             'photos',
-            'created_at'
+            'created_at',
         )
 
-    
+
+class PetPhotoCLISerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    class Meta:
+        model = PetPhoto
+        fields = (
+            'url',
+        )
+
+    def get_url(self, obj):
+        url = obj.photo.url
+        return f"https://{Site.objects.get_current().domain}{url}"
+
+
+class PetCLISerializer(PetSerializer):
+    photos = PetPhotoCLISerializer(many=True, read_only=True)
