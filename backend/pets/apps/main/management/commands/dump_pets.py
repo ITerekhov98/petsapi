@@ -1,5 +1,5 @@
 from distutils.util import strtobool
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from pets.apps.main.models import Pet
 from pets.apps.api.serializers import PetCLISerializer
 import json

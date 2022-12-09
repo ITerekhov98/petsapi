@@ -21,7 +21,7 @@ class Pet(models.Model):
         DOG = 'dog', 'Собака'
         CAT = 'cat', 'Кошка'
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     name = models.CharField(verbose_name='Имя питомца', max_length=100)
     age = models.IntegerField(verbose_name='Возраст')
     type = models.CharField(

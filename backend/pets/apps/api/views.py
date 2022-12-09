@@ -9,11 +9,11 @@ from rest_framework.exceptions import ParseError
 
 from pets.apps.main.models import Pet, PetPhoto
 from .serializers import PetSerializer, PetPhotoSerializer
-from rest_framework.parsers import JSONParser, FileUploadParser
+from rest_framework.parsers import JSONParser, FileUploadParser, MultiPartParser
 
 
 class PetsViewSet(viewsets.ModelViewSet):
-    parser_classes = [JSONParser, FileUploadParser]
+    parser_classes = [JSONParser, MultiPartParser, FileUploadParser]
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 

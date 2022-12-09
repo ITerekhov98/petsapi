@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
+import dj_database_url
 from pathlib import Path
 from environs import Env
 
@@ -26,6 +27,7 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 API_ACCESS_TOKEN = env.str('API_ACCESS_TOKEN')
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,8 +37,7 @@ INSTALLED_APPS = [
     'pets.apps.main',
     'pets.apps.api',
     'rest_framework',
-    'django_cleanup.apps.CleanupConfig',
-    'django.contrib.sites', 
+    'django_cleanup.apps.CleanupConfig', 
 ]
 
 MIDDLEWARE = [
@@ -74,10 +75,7 @@ WSGI_APPLICATION = 'pets.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(env.str("DB_URL"), conn_max_age=600)
 }
 
 
@@ -115,14 +113,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {

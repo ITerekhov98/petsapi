@@ -16,7 +16,7 @@ def change_default_site_name(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main', '0003_alter_petphoto_id'),
+        ('main', '0002_alter_pet_id_petphoto'),
     ]
 
     operations = [
@@ -25,8 +25,4 @@ class Migration(migrations.Migration):
 
 
 from django.db import migrations
-
-
-
-
 
