@@ -10,6 +10,7 @@ from pets.apps.main.models import Pet, PetPhoto
 from .serializers import PetSerializer, PetPhotoSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
+
 class PetsViewSet(viewsets.ModelViewSet):
     parser_classes = [FormParser, MultiPartParser, JSONParser]
     queryset = Pet.objects.all()
@@ -58,6 +59,7 @@ class PetsViewSet(viewsets.ModelViewSet):
         )
         response = PetPhotoSerializer(pet_photo, context={"request": request}).data
         return Response(response)
-        
+    
+
 
 
