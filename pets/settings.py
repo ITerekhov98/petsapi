@@ -126,7 +126,7 @@ MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "pets.apps.main.authentication.TokenAuthentication",
+        "pets.apps.main.authentication.CustomTokenAuthentication",
     ),
     'EXCEPTION_HANDLER': 'pets.apps.api.handlers.auth_exception_handler',
 }

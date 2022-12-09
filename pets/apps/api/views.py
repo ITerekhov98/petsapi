@@ -1,4 +1,5 @@
 from distutils.util import strtobool
+from django.forms import ValidationError
 
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
@@ -8,11 +9,11 @@ from rest_framework.exceptions import ParseError
 
 from pets.apps.main.models import Pet, PetPhoto
 from .serializers import PetSerializer, PetPhotoSerializer
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from pets.apps.main.authentication import CustomTokenAuthentication
+from rest_framework.parsers import JSONParser, FileUploadParser
+
 
 class PetsViewSet(viewsets.ModelViewSet):
-    parser_classes = [FormParser, MultiPartParser, JSONParser]
+    parser_classes = [JSONParser, FileUploadParser]
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 
@@ -50,10 +51,13 @@ class PetsViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'])
     def upload_photo(self, request, pk=None):
-        photo = request.data.get('media')
+        photo = request.data.get('file')
         if not photo:
-            raise ParseError('Request has no resource file attached')
-        pet = get_object_or_404(Pet, id=pk)
+            raise ParseError('Request has no resource file attached.')
+        try:
+            pet = get_object_or_404(Pet, id=pk)
+        except ValidationError:
+            raise ParseError('Bad request.')
         pet_photo = PetPhoto.objects.create(
             pet=pet,
             photo=photo
@@ -64,7 +68,7 @@ class PetsViewSet(viewsets.ModelViewSet):
     def destroy(self, request):
         pets_ids = request.data.get('ids')
         if not pets_ids:
-            raise ParseError('Request has no pets to delete')
+            raise ParseError('Request has no pets to delete.')
         invalid_ids = Pet.objects.delete_by_ids(pets_ids)
         response = {
             "deleted": len(pets_ids)
