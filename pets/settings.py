@@ -23,6 +23,8 @@ DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
+API_ACCESS_TOKEN = env.str('API_ACCESS_TOKEN')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -121,3 +123,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "pets.apps.main.authentication.TokenAuthentication",
+    ),
+    'EXCEPTION_HANDLER': 'pets.apps.api.handlers.auth_exception_handler',
+}

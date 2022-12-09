@@ -9,7 +9,7 @@ from rest_framework.exceptions import ParseError
 from pets.apps.main.models import Pet, PetPhoto
 from .serializers import PetSerializer, PetPhotoSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-
+from pets.apps.main.authentication import CustomTokenAuthentication
 
 class PetsViewSet(viewsets.ModelViewSet):
     parser_classes = [FormParser, MultiPartParser, JSONParser]
