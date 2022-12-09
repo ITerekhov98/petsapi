@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.exceptions import ParseError
 
-from pets.apps.main.models import Pet
-from .serializers import PetSerializer
-
+from pets.apps.main.models import Pet, PetPhoto
+from .serializers import PetSerializer, PetPhotoSerializer
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 class PetsViewSet(viewsets.ModelViewSet):
+    parser_classes = [FormParser, MultiPartParser, JSONParser]
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 
@@ -30,4 +33,20 @@ class PetsViewSet(viewsets.ModelViewSet):
             "items": serializer.data
             }
         )
+    
+    @action(detail=True, methods=['post'])
+    def upload_photo(self, request, pk=None):
+        try:
+            photo = request.data['media']
+        except KeyError:
+            raise ParseError('Request has no resource file attached')
+        pet = get_object_or_404(Pet, id=pk)
+        pet_photo = PetPhoto.objects.create(
+            pet=pet,
+            photo=photo
+        )
+        response = PetPhotoSerializer(pet_photo, context={"request": request}).data
+        return Response(response)
+        
+
 

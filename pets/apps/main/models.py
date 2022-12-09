@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-
+from django.conf import settings
 
 class Pet(models.Model):
     class PetType(models.TextChoices):
@@ -24,3 +24,14 @@ class Pet(models.Model):
 
     def __str__(self) -> str:
         return f'{self.type}: {self.name}'
+
+
+class PetPhoto(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    pet = models.ForeignKey(
+        Pet,
+        verbose_name='питомец',
+        related_name='photos',
+        on_delete=models.CASCADE
+    )
+    photo = models.ImageField('фото', upload_to='pets')

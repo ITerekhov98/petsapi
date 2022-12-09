@@ -4,3 +4,4 @@ env
 __*
 !__init__.py
 db*
+*.jpg
