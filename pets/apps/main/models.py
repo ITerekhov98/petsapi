@@ -1,6 +1,20 @@
 import uuid
 from django.db import models
-from django.conf import settings
+
+
+class PetQuerySet(models.QuerySet):
+    
+    def delete_by_ids(self, pets_ids):
+        '''Принимает список c id объектов, удаляет их и возвращает id
+           несуществовавших объектов
+        '''
+        valid_pets_ids = [
+            str(pets_id) for pets_id in 
+            self.filter(id__in=pets_ids).values_list(flat=True)
+        ]
+        invalid_pets_ids = list(set(pets_ids) - set(valid_pets_ids))
+        self.filter(id__in=valid_pets_ids).delete()
+        return invalid_pets_ids
 
 class Pet(models.Model):
     class PetType(models.TextChoices):
@@ -17,6 +31,8 @@ class Pet(models.Model):
         db_index=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = PetQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'Питомец'

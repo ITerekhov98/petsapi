@@ -1,7 +1,7 @@
 from distutils.util import strtobool
 
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
@@ -40,17 +40,18 @@ class PetsViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response({
+        return Response(
+            {
             "count": Pet.objects.count(),
             "items": serializer.data
-            }
+            },
+            status=status.HTTP_200_OK
         )
     
     @action(detail=True, methods=['post'])
     def upload_photo(self, request, pk=None):
-        try:
-            photo = request.data['media']
-        except KeyError:
+        photo = request.data.get('media')
+        if not photo:
             raise ParseError('Request has no resource file attached')
         pet = get_object_or_404(Pet, id=pk)
         pet_photo = PetPhoto.objects.create(
@@ -58,8 +59,30 @@ class PetsViewSet(viewsets.ModelViewSet):
             photo=photo
         )
         response = PetPhotoSerializer(pet_photo, context={"request": request}).data
-        return Response(response)
+        return Response(response, status=status.HTTP_201_CREATED)
     
+    def destroy(self, request):
+        pets_ids = request.data.get('ids')
+        if not pets_ids:
+            raise ParseError('Request has no pets to delete')
+        invalid_ids = Pet.objects.delete_by_ids(pets_ids)
+        response = {
+            "deleted": len(pets_ids)
+            }
+        if invalid_ids:
+            response['deleted'] -= len(invalid_ids)
+            errors = [
+                {
+                    "id": invalid_id,
+                    "error": "Pet with the matching ID was not found."
+                } 
+                for invalid_id in invalid_ids
+            ]
+            response['errors'] = errors
+        return Response(
+            response,
+            status=status.HTTP_200_OK
+        )
 
 
 

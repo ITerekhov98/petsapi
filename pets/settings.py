@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'pets.apps.main',
     'pets.apps.api',
     'rest_framework',
+     'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
