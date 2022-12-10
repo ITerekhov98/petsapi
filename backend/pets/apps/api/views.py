@@ -6,11 +6,11 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
+from rest_framework.parsers import JSONParser, FileUploadParser, MultiPartParser
 
 from pets.apps.main.models import Pet, PetPhoto
 from .serializers import PetSerializer, PetPhotoSerializer
-from rest_framework.parsers import JSONParser, FileUploadParser, MultiPartParser
-
+from .services import delete_pets_ids_with_validation
 
 class PetsViewSet(viewsets.ModelViewSet):
     parser_classes = [JSONParser, MultiPartParser, FileUploadParser]
@@ -72,20 +72,15 @@ class PetsViewSet(viewsets.ModelViewSet):
         pets_ids = request.data.get('ids')
         if not pets_ids:
             raise ParseError('Request has no pets to delete.')
-        invalid_ids = Pet.objects.delete_by_ids(pets_ids)
+
+
+        invalid_ids_with_errors = delete_pets_ids_with_validation(pets_ids)
         response = {
             "deleted": len(pets_ids)
             }
-        if invalid_ids:
-            response['deleted'] -= len(invalid_ids)
-            errors = [
-                {
-                    "id": invalid_id,
-                    "error": "Pet with the matching ID was not found."
-                }
-                for invalid_id in invalid_ids
-            ]
-            response['errors'] = errors
+        if invalid_ids_with_errors:
+            response['deleted'] -= len(invalid_ids_with_errors)
+            response['errors'] = invalid_ids_with_errors
         return Response(
             response,
             status=status.HTTP_200_OK
