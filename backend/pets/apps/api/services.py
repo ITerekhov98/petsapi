@@ -29,7 +29,7 @@ def delete_pets_ids_with_validation(pets_ids: Union[list, tuple]) -> tuple:
         for pet_id in pets_ids if not is_valid_uuid(pet_id)
     ]
     non_exist_ids = Pet.objects.delete_by_ids(
-        [pet_id for pet_id in pets_ids if is_valid_uuid()]
+        [pet_id for pet_id in pets_ids if is_valid_uuid(pet_id)]
     )
     invalid_ids.extend(
         {
