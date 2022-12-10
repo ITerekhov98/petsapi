@@ -6,4 +6,7 @@ def error404(request, exception):
     response_data = {
         'detail': 'Not found'
     }
-    return HttpResponseNotFound(json.dumps(response_data), content_type="application/json")
+    return HttpResponseNotFound(
+        json.dumps(response_data),
+        content_type="application/json"
+    )

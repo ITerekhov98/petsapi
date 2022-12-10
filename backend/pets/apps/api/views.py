@@ -1,6 +1,6 @@
 from distutils.util import strtobool
-from django.forms import ValidationError
 
+from django.forms import ValidationError
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -43,12 +43,12 @@ class PetsViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(
             {
-            "count": Pet.objects.count(),
-            "items": serializer.data
+                "count": Pet.objects.count(),
+                "items": serializer.data
             },
             status=status.HTTP_200_OK
         )
-    
+
     @action(detail=True, methods=['post'])
     def upload_photo(self, request, pk=None):
         photo = request.data.get('file')
@@ -62,9 +62,12 @@ class PetsViewSet(viewsets.ModelViewSet):
             pet=pet,
             photo=photo
         )
-        response = PetPhotoSerializer(pet_photo, context={"request": request}).data
+        response = PetPhotoSerializer(
+            pet_photo,
+            context={"request": request}
+        ).data
         return Response(response, status=status.HTTP_201_CREATED)
-    
+
     def destroy(self, request):
         pets_ids = request.data.get('ids')
         if not pets_ids:
@@ -79,7 +82,7 @@ class PetsViewSet(viewsets.ModelViewSet):
                 {
                     "id": invalid_id,
                     "error": "Pet with the matching ID was not found."
-                } 
+                }
                 for invalid_id in invalid_ids
             ]
             response['errors'] = errors
@@ -87,6 +90,3 @@ class PetsViewSet(viewsets.ModelViewSet):
             response,
             status=status.HTTP_200_OK
         )
-
-
-

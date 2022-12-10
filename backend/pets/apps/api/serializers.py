@@ -3,15 +3,17 @@ from rest_framework import serializers
 from pets.apps.main.models import Pet, PetPhoto
 from django.contrib.sites.models import Site
 
+
 class PetPhotoSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
+
     class Meta:
         model = PetPhoto
         fields = (
             'id',
             'url',
         )
-   
+
     def get_url(self, obj):
         request = self.context.get('request')
         url = obj.photo.url
@@ -25,7 +27,7 @@ class PetSerializer(serializers.ModelSerializer):
         read_only=True,
         format="%Y-%m-%dT%H:%M:%S"
     )
-    
+
     class Meta:
         model = Pet
         fields = (
@@ -40,6 +42,7 @@ class PetSerializer(serializers.ModelSerializer):
 
 class PetPhotoCLISerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
+
     class Meta:
         model = PetPhoto
         fields = (

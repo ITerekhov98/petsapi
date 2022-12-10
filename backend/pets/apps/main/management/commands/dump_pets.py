@@ -1,8 +1,10 @@
+import json
+
 from distutils.util import strtobool
 from django.core.management.base import BaseCommand
+
 from pets.apps.main.models import Pet
 from pets.apps.api.serializers import PetCLISerializer
-import json
 
 
 class Command(BaseCommand):
@@ -25,8 +27,8 @@ class Command(BaseCommand):
             has_photos = strtobool(has_photos)
             has_not_photos = False if has_photos else True
             pets = Pet.objects.filter(photos__isnull=has_not_photos) \
-                               .distinct() \
-                               .order_by('-created_at') \
+                              .distinct() \
+                              .order_by('-created_at') \
 
         serialized_pets = PetCLISerializer(pets, many=True).data
         self.stdout.write(json.dumps(serialized_pets))

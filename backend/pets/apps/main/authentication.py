@@ -9,7 +9,7 @@ class CustomTokenAuthentication(authentication.BaseAuthentication):
         auth_token = request.headers.get('X-Api-Key')
         if not auth_token:
             raise exceptions.NotAuthenticated('Missed API token.')
-        if auth_token != settings.API_ACCESS_TOKEN: 
+        if auth_token != settings.API_ACCESS_TOKEN:
             raise exceptions.AuthenticationFailed('Invalid token.')
-        
-        return (AnonymousUser(), None) 
+
+        return (AnonymousUser(), None)

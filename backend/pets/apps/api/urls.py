@@ -3,9 +3,9 @@ from rest_framework import routers
 
 from .views import PetsViewSet
 
+
 class CustomRouter(routers.SimpleRouter):
     routes = [
-        # List route.
         routers.Route(
             url=r'^{prefix}{trailing_slash}$',
             mapping={
@@ -24,7 +24,8 @@ class CustomRouter(routers.SimpleRouter):
             initkwargs={}
         ),
     ]
-    
+
+
 router = CustomRouter()
 router.register(r'pets', PetsViewSet)
 

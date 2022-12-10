@@ -3,7 +3,7 @@ from django.db import models
 
 
 class PetQuerySet(models.QuerySet):
-    
+
     def delete_by_ids(self, pets_ids):
         '''Принимает список c id объектов, удаляет их и возвращает id
            несуществовавших объектов
@@ -15,6 +15,7 @@ class PetQuerySet(models.QuerySet):
         invalid_pets_ids = list(set(pets_ids) - set(valid_pets_ids))
         self.filter(id__in=valid_pets_ids).delete()
         return invalid_pets_ids
+
 
 class Pet(models.Model):
     class PetType(models.TextChoices):
