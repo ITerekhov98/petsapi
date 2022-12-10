@@ -1,5 +1,14 @@
 # petsapi
-## simple api, based on drf and psql
+
+## Функционал
+
+### Ссылка на сайт
+### Ссылка на postman-коллекцию
+### Выгрузка данных из БД в stdout:
+```
+docker-compose 
+```
+
 
 ## Установка и запуск:
 
@@ -10,7 +19,28 @@
 - `DEBUG` — дебаг-режим
 - `DJANGO_SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте.
 - `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
-- `YANDEX_API_TOKEN`  - ключ доступа для [API Яндекс-геокодера](https://passport.yandex.ru/auth?origin=apikeys&retpath=https%3A%2F%2Fdeveloper.tech.yandex.ru%2F) 
 - `DB_URL` - url с учётными данными для postgres, в формате: postgres://DB_USER:DB_PASSWORD@DB_HOST:DB_PORT/DB_NAME
-- `ROLLBAR_TOKEN` - ваш токен доступа для учёта логов в [rollbar](https://rollbar.com)
-- `ROLLBAR_ENVIRONMENT` - переменная среды, по умолчанию development (но не стоит её оставлять таковой в prod-версии)
+- `API_ACCESS_TOKEN` - Токен, по которому клиенты смогут обращаться к вашему api. Указывается при каждом запросе, в заголовке `X-API-KEY`
+- (*OPTIONAL*) `CURRENT_DOMAIN` - укажите в этой переменной текущий домен вашего сервиса, это понадобитсяесли захотите выгрузить данные из БД в JSON формате
+
+Собираем и запускаем контейнер:
+```
+docker-compose -f docker-compose.dev.yml up --build
+```
+Подождите несколько секунд чтобы запустились все сервисы и собралась статика. Сайт будет достпен на [127.0.0.1:80](https://127.0.0.1:80)
+
+## Prod-версия c поддержкой HTTPS
+Создайте `.env` файл с данными, по инструкции в секции *Dev-версия*. Добавьте к нему почту для certbot, которая будет использоваться при регистрации ssl сертификата:
+```
+CERTBOT_EMAIL=example@email.com
+```
+Далее в файле *nginx_ssl/nginx_ssl.conf* замените {your hostname} на домен вашего сайта
+
+Собираем и запускаем контейнер:
+```
+docker-compose -f docker-compose.prod.yml up --build
+```
+логи сервисов можно посмотреть выполнив в консоли команду:
+```
+docker-compose -f docker-compose.prod.yml logs -f
+```
