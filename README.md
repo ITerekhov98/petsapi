@@ -1,14 +1,13 @@
-# petsapi
+# Petsapi
 
-## Функционал
+## Функционал:
 
-### Ссылка на сайт
-### Ссылка на postman-коллекцию
+### [Ссылка на сайт](https://iterekhov.ru/api/v1/pets/)
+### [Ссылка на postman-коллекцию](https://www.postman.com/navigation-astronaut-23060129/workspace/iterekhov/collection/24836864-91b9988a-6000-47e6-9467-66e759f0b10d?action=share&creator=24836864)
 ### Выгрузка данных из БД в stdout:
 ```
-docker-compose 
+docker-compose -f docker-compose.prod.yml exec django ./manage.py dump_pets
 ```
-
 
 ## Установка и запуск:
 
