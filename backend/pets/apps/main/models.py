@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-
+from django.core.validators import MinValueValidator
 
 class PetQuerySet(models.QuerySet):
 
@@ -24,7 +24,10 @@ class Pet(models.Model):
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     name = models.CharField(verbose_name='Имя питомца', max_length=100)
-    age = models.IntegerField(verbose_name='Возраст')
+    age = models.IntegerField(
+        verbose_name='Возраст',
+        validators = [MinValueValidator(0)]
+    )
     type = models.CharField(
         verbose_name='Вид животного',
         max_length=10,
