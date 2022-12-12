@@ -4,6 +4,8 @@
 
 ### [Ссылка на сайт](https://iterekhov.ru/api/v1/pets/)
 ### [Ссылка на postman-коллекцию](https://www.postman.com/navigation-astronaut-23060129/workspace/iterekhov/collection/24836864-91b9988a-6000-47e6-9467-66e759f0b10d?action=share&creator=24836864)
+- #### [Тестовый environment с access token для быстрого старта](https://www.postman.com/navigation-astronaut-23060129/workspace/iterekhov/environment/24836864-8922470a-ed64-4f77-b0bd-7e03f510eeca)
+
 ### Выгрузка данных из БД в stdout:
 ```
 docker-compose -f docker-compose.prod.yml exec django ./manage.py dump_pets
