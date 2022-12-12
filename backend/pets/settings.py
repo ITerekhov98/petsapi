@@ -75,11 +75,16 @@ WSGI_APPLICATION = 'pets.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+POSTGRES_DB = env.str('POSTGRES_DB')
+POSTGRES_USER = env.str('POSTGRES_USER')
+POSTGRES_PASSWORD = env.str('POSTGRES_PASSWORD')
 
 DATABASES = {
-    'default': dj_database_url.parse(env.str("DB_URL"), conn_max_age=600)
+    'default': dj_database_url.config(
+        default=f"postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@db/{POSTGRES_DB}", 
+        conn_max_age=600
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
