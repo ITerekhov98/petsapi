@@ -4,7 +4,13 @@
 
 ### [Ссылка на сайт](https://iterekhov.ru/api/v1/pets/)
 ### [Ссылка на postman-коллекцию](https://www.postman.com/navigation-astronaut-23060129/workspace/iterekhov/collection/24836864-91b9988a-6000-47e6-9467-66e759f0b10d?action=share&creator=24836864)
-- #### [Тестовый environment с access token для быстрого старта](https://www.postman.com/navigation-astronaut-23060129/workspace/iterekhov/environment/24836864-8922470a-ed64-4f77-b0bd-7e03f510eeca)
+#### Как быстро потестить API:
+- Зарегистрируйтесь в [Postman](https://identity.getpostman.com/login);
+- Перейдите по ссылке на postman-коллекцию выше, создайте форк (Ctrl+Alt+F);
+- Таким же образом скопируйте к себе [Тестовый environment с access token](https://www.postman.com/navigation-astronaut-23060129/workspace/iterekhov/environment/24836864-8922470a-ed64-4f77-b0bd-7e03f510eeca);
+- Перейдите во вкладку коллекции и в правом верхнем углу выберите тестовый environment;
+- Можете пользоваться :)
+
 
 ### Выгрузка данных из БД в stdout:
 ```
@@ -20,8 +26,11 @@ docker-compose -f docker-compose.prod.yml exec django ./manage.py dump_pets
 - `DEBUG` — дебаг-режим
 - `DJANGO_SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте.
 - `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
-- `DB_URL` - url с учётными данными для postgres, в формате: postgres://DB_USER:DB_PASSWORD@DB_HOST:DB_PORT/DB_NAME
-- `API_ACCESS_TOKEN` - Токен, по которому клиенты смогут обращаться к вашему api. Указывается при каждом запросе, в заголовке `X-API-KEY`
+- `API_ACCESS_TOKEN` - Токен, по которому клиенты смогут обращаться к вашему api. Указывается при каждом запросе, в заголовке 
+- `X-API-KEY` - Токен доступа к API. Его будет необходимо указывать при каждом запросе к приложению, в HTTP заголовке X-API-KEY
+- `POSTGRES_DB` - Имя базы данных
+- `POSTGRES_USER` - Имя пользователя базы данных
+- `POSTGRES_PASSWORD` - Пароль пользователя базы данных
 - (*OPTIONAL*) `CURRENT_DOMAIN` - укажите в этой переменной текущий домен вашего сервиса, это понадобитсяесли захотите выгрузить данные из БД в JSON формате
 
 Собираем и запускаем контейнер:
