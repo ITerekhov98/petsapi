@@ -15,8 +15,7 @@ docker-compose -f docker-compose.prod.yml exec django ./manage.py dump_pets
 - `DEBUG` — дебаг-режим
 - `DJANGO_SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте.
 - `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
-- `API_ACCESS_TOKEN` - Токен, по которому клиенты смогут обращаться к вашему api. Указывается при каждом запросе, в заголовке 
-- `X-API-KEY` - Токен доступа к API. Его будет необходимо указывать при каждом запросе к приложению, в HTTP заголовке X-API-KEY
+- `API_ACCESS_TOKEN` - Токен доступа к API. Его будет необходимо указывать при каждом запросе к приложению, в HTTP заголовке X-API-KEY
 - `POSTGRES_DB` - Имя базы данных
 - `POSTGRES_USER` - Имя пользователя базы данных
 - `POSTGRES_PASSWORD` - Пароль пользователя базы данных
